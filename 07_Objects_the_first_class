@@ -1,0 +1,32 @@
+strings.js
+Реализуйте внутреннюю функцию takeLast(), которая возвращает последние n символов строки в обратном порядке. Количество символов передаётся в takeLast() вторым параметром. Если передаётся пустая строка или строка меньше необходимой длины, функция должна вернуть null.
+
+Примеры
+run('');       // null
+run('cb');     // null
+run('power');  // rewo
+run('hexlet'); // telx
+
+
+const run = (text) => {
+  // BEGIN (write your solution here)
+  const takeLast = (str, num) => {
+    const result = [];
+    if (str.length < num) {
+      return null;
+    }
+    const arrStr = str.split('');
+    let count = 0;
+    for (let i = arrStr.length; i >= 0; i -= 1) {
+      if (count <= num) {
+        result.push(arrStr[i]);
+        count += 1;
+      }
+    }
+    return result.join('');
+  };
+  // END
+  return takeLast(text, 4);
+};
+
+export default run;
