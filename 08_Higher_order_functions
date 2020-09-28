@@ -28,20 +28,11 @@ import _ from 'lodash';
 
 // BEGIN (write your solution here)
 const takeOldest = (list, num = 1) => {
-  const newList = [];
-  list.forEach((item) => {
-    const bir = item.birthday;
-    const lis = { name: item.name, bir: Date.parse(bir), birthday: item.birthday };
-    newList.push(lis);
-  });
-  const result = _.sortBy(newList, 'bir');
-  const consoll = [];
-  for (let i = 0; i < result.length; i += 1) {
-    if (i < num) {
-      const lis = { name: result[i].name, birthday: result[i].birthday };
-      consoll.push(lis);
-    }
+  const newList = _.sortBy(list, [function (arr) { return Date.parse(arr.birthday); }]);
+  const result = [];
+  for (let i = 0; i < num; i += 1) {
+    result.push(newList[i]);
   }
-  return consoll;
+  return result;
 };
 export default takeOldest;
