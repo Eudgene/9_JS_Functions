@@ -1,0 +1,58 @@
+emails.js
+Реализуйте и экспортируйте по умолчанию функцию, которая принимает на вход список емейлов, а возвращает количество емейлов, расположенных на каждом бесплатном домене. Список бесплатных доменов хранится в константе freeEmailDomains.
+
+Примеры
+const emails = [
+    'info@gmail.com',
+    'info@yandex.ru',
+    'info@hotmail.com',
+    'mk@host.com',
+    'support@hexlet.io',
+    'key@yandex.ru',
+    'sergey@gmail.com',
+    'vovan@gmail.com',
+    'vovan@hotmail.com',
+];
+
+getFreeDomainsCount(emails);
+// {
+//   'gmail.com': 3,
+//   'yandex.ru': 2,
+//   'hotmail.com': 2,
+// };
+Другие примеры смотрите в модуле с тестами.
+
+Подсказки
+При решении вам может понадобится функция get() из библиотеки lodash.
+
+import get from 'lodash/get';
+import _ from 'lodash';
+
+const freeEmailDomains = [
+  'gmail.com',
+  'yandex.ru',
+  'hotmail.com',
+];
+
+// BEGIN (write your solution here)
+const getFreeDomainsCount = (emails) => {
+  const fil = (value) => {
+    const em = value.split('@');
+    if (freeEmailDomains.includes(em[1])) {
+      return true;
+    }
+    return false;
+  };
+  const filtEmails = emails.filter(fil);
+  const cb = (acc, email) => {
+    const em = email.split('@');
+    if (!_.has(acc, em[1])) {
+      acc[em[1]] = 0;
+    }
+    acc[em[1]] += 1;
+    return acc;
+  };
+  const result = filtEmails.reduce(cb, {});
+  return result;
+};
+export default getFreeDomainsCount;
