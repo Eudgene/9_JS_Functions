@@ -1,0 +1,15 @@
+sameParityFilter.js
+Реализуйте и экспортируйте по умолчанию функцию, которая принимает на вход массив и возвращает новый, состоящий из элементов, у которых такая же чётность, как и у первого элемента входного массива.
+
+Примеры
+sameParity([-1, 0, 1, -3, 10, -2]); // [-1, 1, -3]
+sameParity([2, 0, 1, -3, 10, -2]); // [2, 0, 10, -2]
+sameParity([]); // []
+
+
+const sameParity = (arr) => {
+  const parityFirst = Math.abs(arr[0]) % 2;
+  const newArr = arr.filter((item) => Math.abs(item) % 2 === parityFirst);
+  return newArr;
+};
+export default sameParity;
