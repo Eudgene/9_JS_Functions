@@ -1,0 +1,47 @@
+solution.js
+Реализуйте и экспортируйте функции ipToInt() и intToIp(), которые преобразовывают представление IP-адреса из десятичного формата с точками в 32-битное число в десятичной форме и обратно.
+
+Функция ipToInt() принимает на вход строку и должна возвращать число. А функция intToIp() наоборот: принимает на вход число, а возвращает строку.
+
+Примеры
+ipToInt('128.32.10.1'); // 2149583361
+ipToInt('0.0.0.0'); // 0
+ipToInt('255.255.255.255'); // 4294967295
+
+intToIp(2149583361); // '128.32.10.1'
+intToIp(0); // '0.0.0.0'
+intToIp(4294967295); // '255.255.255.255'
+Подсказки
+IPv4
+Используйте функцию parseInt() для перевода строки в необходимую систему счисления
+Изучите возможности метода toString() для числа, рассмотрите примеры
+Дополнительно можно использовать метод padStart()
+
+import chunk from 'lodash/chunk';
+
+// BEGIN (write your solution here)
+export const ipToInt = (str) => {
+  const arr = str.split('.');
+  const convertedArr = arr.map((num) => Number(num).toString(16));
+  const trr = convertedArr.map((num) => {
+    let res = num;
+    if (num.length < 2) {
+      res = num.padStart(2, '0');
+    }
+    return res;
+  });
+  const newTrr = trr.join('');
+  return parseInt(newTrr, 16);
+};
+
+export const intToIp = (num) => {
+  const num16 = num.toString(16);
+  let newNum16 = num16;
+  if (num16.length < 8) {
+    newNum16 = num16.padStart(8, '0');
+  }
+  const arr = chunk(newNum16.split(''), 2);
+  const newArr = arr.map((item) => item.join(''));
+  const newArr2 = newArr.map((item) => parseInt(item, 16));
+  return newArr2.join('.');
+};
