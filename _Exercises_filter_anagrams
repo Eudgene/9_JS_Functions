@@ -1,0 +1,52 @@
+Анаграммы — это слова, которые состоят из одинаковых букв. Например:
+
+спаниель — апельсин
+карат — карта — катар
+топор — ропот — отпор
+filterAnagrams.js
+Реализуйте и экспортируйте по умолчанию функцию, которая находит все анаграммы слова. Функция принимает исходное слово и список для проверки (массив), а возвращает массив всех анаграмм. Если в списке слов отсутствуют анаграммы, то возвращается пустой массив.
+
+Примеры
+filterAnagrams('abba', ['aabb', 'abcd', 'bbaa', 'dada']);
+// ['aabb', 'bbaa']
+
+filterAnagrams('racer', ['crazer', 'carer', 'racar', 'caers', 'racer']);
+// ['carer', 'racer']
+
+filterAnagrams('laser', ['lazing', 'lazy',  'lacer']);
+// []
+
+
+import _ from 'lodash';
+// BEGIN (write your solution here)
+const filterAnagrams = (str, arr) => {
+  const newStr = str.split('');
+  const arrByLetter = arr.map((word) => word.split(''));
+  const test = [];
+  const arrByFilter = arrByLetter.filter((word) => word.length === str.length);
+  arrByFilter
+    .map((word) => {
+      let pre = 0;
+      let pre2 = 0;
+      newStr
+        .map((letter) => {
+          if (word.includes(letter)) {
+            pre += 1;
+          }
+          return pre;
+        });
+      word
+        .map((l) => {
+          if (newStr.includes(l)) {
+            pre2 += 1;
+          }
+          return pre2;
+        });
+      if (pre === newStr.length && pre === pre2) {
+        test.push(word.join(''));
+      }
+      return test;
+    });
+  return test;
+};
+export default filterAnagrams;
