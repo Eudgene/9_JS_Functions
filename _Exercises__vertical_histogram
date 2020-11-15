@@ -1,0 +1,102 @@
+Игральная кость — шестигранный кубик, который бросается несколько раз. Гистограмма — это графическое представление данных в виде столбцов или колонок.
+
+histogram.js
+Реализуйте и экспортируйте по умолчанию функцию, которая выводит на экран вертикальную гистограмму. Функция принимает на вход количество бросков кубика и функцию, которая имитирует бросок игральной кости (её реализовывать не нужно). Вызов этой функции генерирует значение от 1 до 6, что соответствует одной из граней игральной кости.
+
+Гистограмма содержит столбцы, каждому из которых соответствует грань игральной кости и количество выпадений этой грани. Результаты отображаются графически (с помощью символов #) и в виде процентного значения от общего количества бросков, за исключением случаев, когда количество равно 0 (нулю).
+
+Дополнительные условия:
+
+Процентные значения должны быть прижаты влево относительно столбца.
+Значения сторон игральной кости должны быть посредине столбца.
+Столбцы между собой разделены пробелом
+Количество секций в столбце (высота столбца) должно соответствовать количеству выпадений каждой из сторон игральной кости.
+Примеры
+import displayHistogram from '../histogram.js';
+
+displayHistogram(32, rollDie);
+// =>                 28%
+//                    ###
+//                    ###
+//            19%     ###
+//            ### 16% ### 16%
+//    13%     ### ### ### ###
+//    ### 9%  ### ### ### ###
+//    ### ### ### ### ### ###
+//    ### ### ### ### ### ###
+//    ### ### ### ### ### ###
+//    -----------------------
+//     1   2   3   4   5   6
+
+displayHistogram(13, rollDie);
+// =>                 31% 31%
+//                    ### ###
+//        15%     15% ### ###
+//        ### 8%  ### ### ###
+//        ### ### ### ### ###
+//    -----------------------
+//     1   2   3   4   5   6
+Подсказки:
+Гистограмма.
+Для решения задачи активно используйте функции из библиотеки lodash.
+При получении процентного значения используйте стандартные правила округления числа.
+
+import _ from 'lodash';
+
+// BEGIN (write your solution here)
+const displayHistogram = (num, rollDie) => {
+  const arrOfNumbers = _.times(num, rollDie);
+  const element = '###';
+  const elementEmpty = '   ';
+  const faceOfTheCube = _.range(1, 7);
+  const countOfNumber = arrOfNumbers.reduce((acc, number) => {
+    if (!_.has(acc, number)) {
+      acc[number] = 0;
+    }
+    acc[number] += 1;
+    return acc;
+  }, {});
+  const values = Object.values(countOfNumber);
+  const sumOfValues = values.reduce((acc, value) => acc + value, 0);
+  let max = values[0];
+  values
+    .filter((value) => {
+      if (max < value) {
+        max = value;
+      }
+      return max;
+    });
+  const res = [];
+  for (let counter = max + 1; counter > -2; counter -= 1) {
+    const strArr = [];
+    faceOfTheCube
+      .map((key) => {
+        if (counter === 0) {
+          strArr.push('---');
+        } else if (counter === -1) {
+          strArr.push(` ${key}`);
+        } else if (countOfNumber[key] >= counter) {
+          strArr.push(element);
+        } else if (countOfNumber[key] + 1 === counter) {
+          const percent = Math.round((countOfNumber[key] / sumOfValues) * 100);
+          strArr.push(percent > 9 ? `${percent}%` : `${percent}% `);
+        } else {
+          strArr.push(elementEmpty);
+        }
+        return strArr;
+      });
+    res.push(strArr);
+  }
+  res.map((item) => {
+    if (item.includes('---')) {
+      console.log(item.join('-'));
+    } else if (item.includes(element) || item.includes(elementEmpty)) {
+      console.log(item.join(' ').trimRight());
+    } else {
+      console.log(item.join('  '));
+    }
+    return item;
+  });
+};
+export default displayHistogram;
+// END
