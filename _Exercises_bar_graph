@@ -1,0 +1,103 @@
+solution.js
+Реализуйте и экспортируйте по умолчанию функцию, которая выводит на экран столбчатую диаграмму. Функция принимает в качестве параметра последовательность чисел, длина которой равна количеству столбцов диаграммы. Размер диаграммы по вертикали должен определяться входными данными.
+
+Примеры
+import barChart from '../solution.js';
+
+barChart([5, 10, -5, -3, 7]);
+// =>  *   
+//     *   
+//     *   
+//     *  *
+//     *  *
+//    **  *
+//    **  *
+//    **  *
+//    **  *
+//    **  *
+//      ## 
+//      ## 
+//      ## 
+//      #  
+//      #  
+
+barChart([5, -2, 10, 6, 1, 2, 6, 4, 8, 1, -1, 7, 3, -5, 5]);
+// =>   *            
+//      *            
+//      *     *      
+//      *     *  *   
+//      **  * *  *   
+//    * **  * *  *  *
+//    * **  ***  *  *
+//    * **  ***  ** *
+//    * ** ****  ** *
+//    * ******** ** *
+//     #        #  # 
+//     #           # 
+//                 # 
+//                 # 
+//                 # 
+Подсказки:
+Для решения задачи активно используйте функции из библиотеки lodash.
+
+
+
+const barChart = (arr) => {
+  const star = '*';
+  const hash = '#';
+  const empty = ' ';
+  let max = arr[0];
+  let min = arr[0];
+  arr
+    .filter((number) => {
+      if (max < number) {
+        max = number;
+      }
+      return max;
+    })
+    .filter((num) => {
+      if (min > num) {
+        min = num;
+      }
+      return min;
+    });
+  if (max === 0) {
+    arr
+      .filter((num) => {
+        if (min > num) {
+          min = num;
+        }
+        return min;
+      });
+    max = max === 0 ? -1 : max;
+  } else {
+    max = max === 0 ? -1 : max;
+    min = min > 0 ? 1 : min;
+  }
+  const resStr = [];
+  for (let counter = max; counter > min - 1; counter -= 1) {
+    if (counter === 0) {
+      counter = -1;
+    }
+    const str = [];
+    arr
+      .map((nu) => {
+        if (nu > 0) {
+          if (nu >= counter && counter > 0) {
+            str.push(star);
+          } else {
+            str.push(empty);
+          }
+        } else if (nu <= counter && counter < 0) {
+          str.push(hash);
+        } else {
+          str.push(empty);
+        }
+        return str;
+      });
+    resStr.push(str.join(''));
+  }
+  return console.log(resStr.join('\n'));
+};
+export default barChart;
+// END
